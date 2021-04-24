@@ -1,15 +1,7 @@
-﻿
-
-
-
-Simplified AES using python
+Simplified AES, RSA and Digital Signture generation and verification using python
 -Shubham Gupta
 
-
-
-To implement S-AES we usepython and socket programming and create a client and a server file in which client enter plain text of 16 bit and a  key and by AES algorithm plain text is encrypted to generate cipher text  at client side now  by using socket will send the generated ciphertext to server , server receive the cipher text and decrypt it using AES algorithm.
-
-Libraries used are
+# Libraries used are
 import asyncio
 import sys
 import websockets
@@ -21,7 +13,7 @@ import hashlib
 Detailed overview is discussed below.
 
 
-For RSA Implementation
+## For RSA Implementation
 Following functionare used:
  genertekeypair():
  It generate public and private key pair for givin prime number 'p' and 'q'.
@@ -39,14 +31,15 @@ digest generated at server side and the signature is matched.
 Also cipher key is encrypted at client side using public key of server and 
 decrypted at server using private key of server to generate orignal key entered. 
 
-For Aes Implementation
+## For Aes Implementation
+To implement S-AES we use python and socket programming and create a client and a server file in which client enter plain text of 16 bit and a  key and by AES algorithm plain text is encrypted to generate cipher text  at client side now  by using socket will send the generated ciphertext to server , server receive the cipher text and decrypt it using AES algorithm. 
 Lets assume the inputs for the encryption are:
 
     • 16-bit Plaintext, P:
 
     • 16-bit Key, K
 
- Key Generation
+# Key Generation
 
 The first step is to generate the sub-keys. This is called Key Generation or Key Expansion:
 
@@ -55,7 +48,7 @@ The function keyExp() is used to generate the key.
 
 Sub2Nib() function is used  to apply S-Box substitution on nibbles using encryption S-Box 
 
-Encryption
+# Encryption
 
 Now let’s do the encryption. There is an initial operation (Add Round Key), followed by the main Round, followed by the final Round..
 
@@ -63,14 +56,14 @@ Remember, the output of each operation is used as the input to the next operatio
 Add Round 0 Key
 
 Plaintext XOR Key1
-Round 1
+# Round 1
 
 Nibble Substitution (S-boxes). Each nibble in the input is used in the Encryption S-Box to generate an output nibble.
 
 Mix Columns. Apply the matrix multiplication with the constant matrix, 
 
 
-Final Round
+# Final Round
 
 Nibble Substitution (S-boxes)
 
@@ -82,20 +75,19 @@ Now we have the final ciphertext.
 
 
 
-Decryption
+# Decryption
 
 Now lets decrypt. Note that we use the same keys generated during the encryption (that is, the decryptor would generate the round sub-keys using the input key K, using the encryption S-Box).
 
-Add Round 2 Key
+# Add Round 2 Key
 
 Inverse Shift Row (same as normal)
 
 Inverse Nibble Sub (by using the decryption S-box)
 
-Add Round 1 Key
+# Add Round 1 Key
 
 Inverse Mix Columns
-
 
 Inverse Shift Row
 
@@ -106,6 +98,11 @@ Add Round 0 Key
 Plaintext and Original are same 
 
 The decryption worked!
+
+# flow of file run
+*server.py
+*client.py
+# for RSA run RSA.py 
 
 
 

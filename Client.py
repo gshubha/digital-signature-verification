@@ -209,7 +209,7 @@ async def message():
           
             public_key=(public_e,public_n)
             encr_key = r_encrypt(public_key,key)
-            print('Encrypted key is:',encr_key)
+            print('Encrypted Secret key is:',encr_key)
             await socket.send(str(encr_key))
             ciphertext = encrypt(msg, key)
             ciphertext = int(ciphertext, 2)
@@ -224,7 +224,7 @@ async def message():
             result = hashlib.sha256(str(msg).encode())
   
             # printing the equivalent hexadecimal value.
-            print("The hexadecimal (digest) equivalent of SHA256 is : ")
+            print("The hexadecimal Digest generated : ")
             t =result.hexdigest()
             print(result.hexdigest())
             private_key =(d,n)

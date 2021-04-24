@@ -86,11 +86,9 @@ def r_decrypt(privateKey, message):
         return c
     else:
          p = [chr((char ** d) % n) for char in message]  
-         return ''.join(p)      
+         return ''.join(p)     # Return the array 
             
-    # Return the array 
-
-    
+     
 
 s_Box  = [0x9, 0x4, 0xa, 0xb, 0xd, 0x1, 0x8, 0x5,
          0x6, 0x2, 0x0, 0x3, 0xc, 0xe, 0xf, 0x7]
@@ -102,7 +100,7 @@ def sub4NibList(sbox, s):
     """Nibble substitution function"""
     return [sbox[e] for e in s]
 
-def shiftRow(s):
+def shiftRow(s):# row shift
     return [s[0], s[1], s[3], s[2]]
 
 def mult(p1, p2):
@@ -142,7 +140,7 @@ def intToVec(n):
     return [n >> 12, (n >> 4) & 0xf, (n >> 8) & 0xf,  n & 0xf]
     
 def decrypt(cipher,key,sBox = sBox):
-    
+    # decrypt function for generation of plaintext from ciphertext
     def fun(state):
         state=[format(s,'04b') for s in state]
         state=eval('0b' + state[0]+state[1]+state[2]+state[3])
@@ -219,6 +217,7 @@ async def response(websocket, path):
         await websocket.send(d_s)
         public_e=int(await websocket.recv())
         public_n=int(await websocket.recv())
+        print('Client Public key recived is:',(public_e,public_n))
         message = await websocket.recv()
         # ciphertext, key = message.split(" ")
         ciphertext = int(message)
@@ -227,14 +226,14 @@ async def response(websocket, path):
         # print("key = ", key)
         plaintext = decrypt(ciphertext, decr_key)
         p=int(plaintext,2)
-        print("plaintext = ", int(plaintext,2))
+        print("Decrypted message(plaintext) = ", int(plaintext,2))
         dig_client=await websocket.recv()
         dig_client=json.loads(dig_client)
         # dig_client =list(dig_client.split(' '))
         result = hashlib.sha256(str(p).encode())
 
         # printing the equivalent hexadecimal value.
-        print("The hexadecimal (digest) equivalent of SHA256 is : ")
+        print("Digest Generated at server : \n")
         t =result.hexdigest()
         print(result.hexdigest())
         # d_s =input("enter 2 to request client public key:")
@@ -244,10 +243,12 @@ async def response(websocket, path):
         public_key = (public_e,public_n)#client public key
         dig=r_decrypt(public_key,dig_client)
 
-        print("After Decryption Digital signature of client is:\n",dig)
+        print("Verification Digest is:\n",dig)
         if(dig== t):
-            print("Signature is matched \n")
-            print("Verified")
+            print("Digital Signature is Verified.")
+            
+        else:
+            print("Digital Signature is Not Verified.")
 
 
         exit()

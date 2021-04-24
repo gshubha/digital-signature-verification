@@ -166,11 +166,11 @@ def encrypt(plain_text,key,sbox = sBox):
 async def message():
     async with websockets.connect("ws://127.0.0.1:1234") as socket:
         while True:
-            p_s =input("enter 1 to request server public key:")
+            p_s =input("Enter 1 to request server public key:")
             await socket.send(p_s)
             public_e=int(await socket.recv())
             public_n=int(await socket.recv())
-            print('the public key of server is(e,n):',public_e,public_n)
+            print('The public key of server is(e,n):',(public_e,public_n))
             while True:
                 try:
                     p = int(input('Enter the value of prime number p = ')) 
@@ -199,9 +199,11 @@ async def message():
             # Calculate f(n) ( denoted by f in code ) =(p-1)(q-1)                                           
             f = (p-1)*(q-1)  
             e ,d,n = generate_keypair(p,q,f,n)
-            print('The value at client [e] = ',e)
-            print('The value at client [d] = ',d)
-            print('The value at client [n] = ',n)
+            # print('The value at client [e] = ',e)
+            # print('The value at client [d] = ',d)
+            # print('The value at client [n] = ',n)
+            print('private key of Client (e,n)',(e,n))
+            print('public key of Client (d,n)',(d,n))
             msg = int(input("Enter text : "))
             key = int(input("Input Cipher key : "))
           

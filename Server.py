@@ -200,18 +200,21 @@ async def response(websocket, path):
         # Calculate f(n) ( denoted by f in code ) =(p-1)(q-1)                                           
         f = (p-1)*(q-1)  
         e,d,n= generate_keypair(p,q,f,n)
-        print('The value at server [e] = ',e)
-        print('The value at server [d] = ',d)
-        print('The value at server [n] = ',n)
+        # print('The value at server [e] = ',e)
+        # print('The value at server [d] = ',d)
+        # print('The value at server [n] = ',n)
+        print('private key of server(e,n):',(e,n))
+        print('public key of server (d,n):',(d,n))
         p_s=await websocket.recv()
         if(p_s=='1'):
             await websocket.send(str(e))
             await websocket.send(str(n))
 
         encr_key = int(await websocket.recv())
+        print('Encrypted Secret key is:',encr_key)
         privateKey=(d,n)
         decr_key = r_decrypt(privateKey,encr_key)
-        print('Original key after decryption is',decr_key) 
+        print('Decrypted Secret key is:',decr_key) 
         d_s =input("Enter 2 to request client public key:")
         await websocket.send(d_s)
         public_e=int(await websocket.recv())
@@ -241,9 +244,10 @@ async def response(websocket, path):
         public_key = (public_e,public_n)#client public key
         dig=r_decrypt(public_key,dig_client)
 
-        print("Digital signature of client is:\n",dig)
+        print("After Decryption Digital signature of client is:\n",dig)
         if(dig== t):
-            print("signature is matched")
+            print("Signature is matched \n")
+            print("Verified")
 
 
         exit()
